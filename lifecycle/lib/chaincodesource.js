@@ -1,0 +1,52 @@
+"use strict";
+/**
+ * Copyright 2020 IBM All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// @ts-ignore no implicit any
+const lifecycle_1 = require("./lifecycle");
+const chaincodeutils_1 = require("./chaincodeutils");
+class ChaincodeSourceImpl {
+    constructor(options) {
+        this.chaincodeName = options.chaincodeName;
+        this.chaincodeVersion = options.chaincodeVersion;
+    }
+    package(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // use utility to package this chaincode package
+            const packageFile = yield chaincodeutils_1.ChaincodeUtils.packageChaincode(this, options);
+            // now build the object to return the results
+            const packagedAttribuites = {
+                chaincodeName: this.chaincodeName,
+                chaincodeVersion: this.chaincodeVersion,
+                packageFile: packageFile,
+                label: options.label
+            };
+            return lifecycle_1.Lifecycle.newPackagedChaincode(packagedAttribuites);
+        });
+    }
+    queryPackagedChaincode(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const packagedAttribuites = {
+                chaincodeName: this.chaincodeName,
+                chaincodeVersion: this.chaincodeVersion,
+                packageFile: Buffer.from('asdf'),
+                label: 'fixme'
+            };
+            return lifecycle_1.Lifecycle.newPackagedChaincode(packagedAttribuites);
+        });
+    }
+}
+exports.ChaincodeSourceImpl = ChaincodeSourceImpl;
+//# sourceMappingURL=chaincodesource.js.map
